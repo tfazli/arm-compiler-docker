@@ -1,0 +1,32 @@
+sudo: required
+dist: bionic
+language: generic
+
+services:
+  - docker
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
+
+env:
+  global:
+    - DOCKER_IMAGE_NAME=arm-compiler-ubuntu-18-04
+    - secure: CVsQboP44QoZCedplOIR7Gw/BuFnjZNnO7QNQu++y5L5HdGAms4f56nunzE/3WE6NDUU05ZA9Q/Y3CaspG7H6aYp1U8Wj7eD8Y9lfwfAAcf21tf5eZPlhuTD0XobL6F59dx9gguuRcK3zGVVTjM6M/YJfNdTs9XgJY7fQDM06ifCvFte/GvgHMeKeVcmUVETUxJCulM209UIvQ0xz70WGYSlaGbsWDpi83d3raGNeAZHj/WK6ed/SbDhXGWVy1gZCGbHIfvarCXtvjNvbz2cMIluv8Iitd2Bvm+IBpIm6yFPFK6OPvbYPYBOOJ7RSlPuFYlmoLV4XST27+Qb51rOOPXW/RFYKzLVIzFKyTfxvjM2T99cHSlQzqr2zZL8Kd7UEpk/MFD53IzfHnMxU/zKrtn3R/2CM23Xftfdo67hj2ZAVzJXta0gG+mU887+wyZyf8eXiROzRYwaO45TBMW9X4L6N96SYhddoUcEx5DMnH34YiJbX6SjsuVXJz/ftzoPdC8/1O8dlulK6WUKcRfEul1661TM0o0VrJLtOuNZHj8NjmJXSpXVVEDqy3iIG98AA8nqq68/bP+HVsqVkbHU8Pcgoe8qBNQANPyNntDoKA08p+OBHku0v5g4gKdIHzl/XJUUC9/7dTW4Bg7kJkZCj/EaCb9Ib2JagmJHooJTdqE= # DOCKER_USERNAME
+    - secure: FZHruFiDkRO5Q842CzaPDdMGvvh/NsMReINXtJGaaKkJaNBQNDQYlp0mTY9stTYrvZeiCOnSDj3F7Lh100KqVWJiy5Th9Rl4JK9rlf/B6bi7AEjl7rTWETwW7hySnib2VUTZGTlM1Mm0s13pJKjy2rssCFxLL2bcb3SA9eBk32b1vrtDrwborKd335EGnc65+94VE7UjSQmJmKBX38HjFhwY+lcH+KZ62QR+r4EhtRtc5k6oUW/uOxDQHngEeeZs71+UpoiNKkHlcmh8Mhh2Am0J4+VlsiG4ieSfufMx5ABomiH9rb6rx/ox29PPtHUZUekjMcv2OdyziQ2uhRSlyyj6NSIpjzZzVxTOukeBLfQ5EButvBfJy+4WRlzRh/AL3K1HlYZtPJQaAwixXofUoYhAMVdlCqTp058QbUQ6D7JGOm+lZi23q0k5cJPrYCghFWPoC21cyNPWxK+YO48WXC2YAHq9antWly4zd5CWWMyVMQsvty/CHslN2uNyrf0oIzDYd0fuY0vTLnq1V6GeZKRLtsZSf/HTdid2v/6hZK0Ep0Yj2GuB2wiV/LXmz6WFNCDeI6zUTFzVg2MleVGocB++cy2oXeNvrilSDzsDZxyThzgBOuW6IeVjdhBfgecut2yxArWetTyeA8kx83kro+H9xwx00roGSifSrSUzmH4= # DOCKER_PASSWORD
+
+before_script:
+  - VERSION=$(cat ./VERSION)
+  - echo "Building docker image \"${DOCKER_IMAGE_NAME}\" version ${VERSION}"
+
+script:
+  - docker build -q -t ${DOCKER_IMAGE_NAME}:${VERSION} .
+  - docker image tag ${DOCKER_IMAGE_NAME}:${VERSION} ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: bash docker_push.sh
+  on:
+    tags: true

@@ -1,4 +1,6 @@
-# ARM Compiler Docker
+# ARM Compiler Docker Image
+
+[![Build Status](https://travis-ci.org/tfazli/arm-compiler-docker.svg?branch=master)](https://travis-ci.org/tfazli/arm-compiler-docker) [![License: MIT](https://img.shields.io/github/license/tfazli/arm-compiler-docker)](https://github.com/tfazli/arm-compiler-docker/blob/master/LICENSE) [![DockerHub](https://img.shields.io/badge/DockerHub--blue.svg?style=flat&logo=docker)](https://hub.docker.com/r/kulebyaka/arm-compiler-ubuntu-18-04)
 
 ## Description
 
@@ -13,6 +15,15 @@ One of the possible applications is to use the result image to run any CI pipeli
 3. **`third-party tools for GoogleTest`** - is needed to build GoogleTesting libraries from sources. Allows you to build firmware with unit tests.
 
 > **`NOTE:`** If you will to change GNU ARM Embedded Toolchain pack, **don't forget** to update Dockerfile accordingly.
+
+
+# Where to find ready to use Docker Image
+
+The Docker Image from this repository is open-source and free to use. You can find the result image on [DockerHub page](https://hub.docker.com/r/kulebyaka/arm-compiler-ubuntu-18-04). Use command below to clone this image to your local machine:
+
+```bash
+docker pull kulebyaka/arm-compiler-ubuntu-18-04
+```
 
 
 # Build and Push Procedure
